@@ -1,0 +1,19 @@
+{% block content %}
+    {% if user.is_authenticated %}
+        Hi {{ user.username }}!
+        
+        {% if latest_question %}
+            <ul>
+                {% for msg in latest_question %}
+                    <li><a href="/messages/{{ msg.id }}/">{{ msg.message_text }}</a></li>
+                {% endfor %}
+            </ul>
+            {% else %}
+                <p>No messages are available :(</p>
+        {% endif %}
+        <p><a href="{% url 'logout' %}">Log Out</a></p>
+    {% else %}
+            <p>You are not logged in</p>
+            <a href="{% url 'login' %}">Log In</a>
+    {% endif %}
+{% endblock %}
