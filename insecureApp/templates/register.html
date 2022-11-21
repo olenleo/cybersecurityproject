@@ -1,0 +1,21 @@
+{% block content %} 
+
+<!--This is a mock page. Using questions and answers for identifying users is bad practise; the form should be redesigned.
+
+To fix the security issues use Django.userAuth-form name--> 
+<div>
+	<h1>Register</h1>
+	<form method="POST">
+		{% csrf_token %}
+		<form>
+            <p>Username: <input type="text" name="username">  </p>
+            <p>Password: <input type="text" name="password">  </p>
+            <p>Confirm password: <input type="text" name="password2">  </p>
+            <p>Security question: What is your favourite Linux distribution? <input type="text" name="security_answer">  </p>
+        </form>
+		<button type="submit">Register</button>
+	</form>
+	<p class="text-center">If you already have an account, <a href="/accounts/login/">login</a> instead.</p>
+</div>
+
+{% endblock %}
