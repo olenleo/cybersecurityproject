@@ -126,4 +126,38 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = "/"
-LOGOUT_REDIRECT_URL = "/" 
+LOGOUT_REDIRECT_URL = "/"
+
+LOGGING = {
+'version': 1,
+    # Version of logging
+	'disable_existing_loggers': True,
+
+		'formatters':{
+		'Simple_Format':{
+		    'format': '{levelname} {message}',
+		    'style': '{',
+	    }
+	},
+
+	'handlers': {
+		'file': {
+		    'level': 'DEBUG', # Change 'DEBUG' to 'INFO' to limit the amount of messages stored!
+		    'class': 'logging.FileHandler',
+		    'filename': './logs/log_file1.log',
+            'formatter':'Simple_Format',
+		},
+
+	    'console': {
+            'level':'DEBUG',
+		    'class': 'logging.StreamHandler',
+		},
+	},
+
+	'loggers': {
+		'django': {
+		    'handlers': ['file', 'console'],
+		    'level': 'DEBUG',
+	    },
+    },
+}
