@@ -131,7 +131,7 @@ LOGOUT_REDIRECT_URL = "/"
 LOGGING = {
 'version': 1,
     # Version of logging
-	'disable_existing_loggers': True,
+	'disable_existing_loggers': False,
 
 		'formatters':{
 		'Simple_Format':{

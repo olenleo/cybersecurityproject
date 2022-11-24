@@ -6,5 +6,6 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('<int:message_id>/', views.get_message, name='get_message'),
     path("register/", views.register, name="register"),
+    path('injection_post/', views.post_message, name="injection_post")
     
 ]
