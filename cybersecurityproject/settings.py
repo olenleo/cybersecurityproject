@@ -85,7 +85,8 @@ DATABASES = {
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
-AUTH_PASSWORD_VALIDATORS = [
+# Uncomment AUTH_PASSWORD_VALIDATORS[] to enable password validation checks.
+"""AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
     },
@@ -99,7 +100,7 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
+"""
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
@@ -144,7 +145,7 @@ LOGGING = {
 		'file': {
 		    'level': 'DEBUG', # Change 'DEBUG' to 'INFO' to limit the amount of messages stored!
 		    'class': 'logging.FileHandler',
-		    'filename': './logs/log_file1.log',
+		    'filename': '../log_file1.log',
             'formatter':'Simple_Format',
 		},
 

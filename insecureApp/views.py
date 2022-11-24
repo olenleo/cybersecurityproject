@@ -13,8 +13,12 @@ from django.db import connection
 def post_message(request):
     """
         This method allows for SQL injections by batched SQL queries. For example if the 'message' parameter is as follows:
-            "injection attack", datetime('now'), 1); DROP TABLE insecureApp_message;'
-        the entire message database will be removed.
+            "Nuke the database"\', datetime('now'), 1); DROP TABLE insecureApp_message;
+        the entire message database will be removed. Return to messages/ path to verify.
+        WARNING: This will naturally break the application. Try this last.
+
+        The following inserts a extra entry:
+            "Sneak in a message"', datetime('now'), 1);INSERT INTO insecureApp_message (message_text, pub_date, user_id_id) VALUES ("PWND", datetime('now'), 1);
 
         Solution:
             - Proper string formatting goes a long way! For example replace the sql variable with
@@ -23,19 +27,18 @@ def post_message(request):
 
         The current method bypasses the models entirely: the method on line #30 onwards uses models and string formatting, providing a safe way to interact with the database.
     """
-
     with connection.cursor() as cursor:
-        message = request.POST.get('message','')
+        message = request.POST.get('message')
         user_id = request.user.id
-        sql = "INSERT INTO insecureApp_message (message_text, pub_date, user_id_id) VALUES (" + message + ", datetime('now'), "+ str(user_id) + "});"
+        sql = "INSERT INTO insecureApp_message (message_text, pub_date, user_id_id) VALUES (\'" + message + "', datetime('now'), " + str(user_id) + ");"
         
         cursor.executescript(sql)   #   Dangerous; executescript allows for batched SQL queries
-        # cursor.execute(sql)       #   A more safe solution, allowing for only one query to exist
+        # cursor.execute(sql)       #   A more safe solution, allowing for only one query to exist. String formatting should be implemented anyhow.
     return HttpResponseRedirect('/')
 
 def index(request):
     """
-        Rows 13-20 provide a safe way of submitting an item to the database
+        The following POST method (Rows 44-53) will provide a safe way of submitting an item to the database.
         By using a 'model' object any SQL queries will be formatted to stop any injection attacks.
     """
     if request.method == 'POST':
