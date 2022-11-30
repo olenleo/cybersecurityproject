@@ -7,6 +7,8 @@ To fix the security issues use Django.userAuth-form name-->
 	<h1>Register</h1>
 	<form method="POST">
 		{% csrf_token %}
+        <h3>Disclaimer</h3>
+        <p>This is only a mock page. Security questions are bad practise.</p>
 		<form>
             <p>Username: <input type="text" name="username">  </p>
             <p>Password: <input type="text" name="password">  </p>

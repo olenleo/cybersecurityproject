@@ -9,23 +9,26 @@ from .models import Message
 from .forms import MessageForm
 from django.db import connection
 
-
-def post_message(request):
+def post_injection_message(request):
     """
         This method allows for SQL injections by batched SQL queries. For example if the 'message' parameter is as follows:
             "Nuke the database"\', datetime('now'), 1); DROP TABLE insecureApp_message;
-        the entire message database will be removed. Return to messages/ path to verify.
+        the entire message database will be removed. 
         WARNING: This will naturally break the application. Try this last.
 
         The following inserts a extra entry:
             "Sneak in a message"', datetime('now'), 1);INSERT INTO insecureApp_message (message_text, pub_date, user_id_id) VALUES ("PWND", datetime('now'), 1);
+        Return to messages/ path to verify.
 
         Solution:
-            - Proper string formatting goes a long way! For example replace the sql variable with
-            sql = "INSERT INTO insecureApp_message (message_text, pub_date, user_id_id)
-                VALUES ("{0}", datetime('now'),{1});".format(message, request.user.id)
+            The current method bypasses the built in models entirely. 
+                - The method on line #44 onwards uses the Django Object Relational Mapping (ORM) layer, providing a safe way to interact with the database.
+            
+            However, if direct database access is required for some reason, 
+            Proper string formatting should be utilised. 
+                - The 'post_safe_message()' method on line #37 stops SQL injection messages.
 
-        The current method bypasses the models entirely: the method on line #30 onwards uses models and string formatting, providing a safe way to interact with the database.
+            If you want to try this out in the app, change the url path in urls.py!
     """
     with connection.cursor() as cursor:
         message = request.POST.get('message')
@@ -36,9 +39,16 @@ def post_message(request):
         # cursor.execute(sql)       #   A more safe solution, allowing for only one query to exist. String formatting should be implemented anyhow.
     return HttpResponseRedirect('/')
 
+def post_safe_message(request):
+    message = request.POST.get('message')
+    user_id = request.user.id
+    with connection.cursor() as cursor:
+        cursor.execute("INSERT INTO insecureApp_message (message_text, pub_date, user_id_id) VALUES (%s, datetime('now'), %s)", [message, user_id])
+    return HttpResponseRedirect('/')
+
 def index(request):
     """
-        The following POST method (Rows 44-53) will provide a safe way of submitting an item to the database.
+        The following POST method (Rows 54-64) will provide a safe way of submitting an item to the database.
         By using a 'model' object any SQL queries will be formatted to stop any injection attacks.
     """
     if request.method == 'POST':

@@ -86,7 +86,8 @@ DATABASES = {
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
 # Uncomment AUTH_PASSWORD_VALIDATORS[] to enable password validation checks.
-"""AUTH_PASSWORD_VALIDATORS = [
+"""
+AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
     },
@@ -131,7 +132,6 @@ LOGOUT_REDIRECT_URL = "/"
 
 LOGGING = {
 'version': 1,
-    # Version of logging
 	'disable_existing_loggers': False,
 
 		'formatters':{
@@ -143,9 +143,9 @@ LOGGING = {
 
 	'handlers': {
 		'file': {
-		    'level': 'DEBUG', # Change 'DEBUG' to 'INFO' to limit the amount of messages stored!
+		    'level': 'DEBUG', # Change 'DEBUG' to for example 'INFO' to limit the amount of messages stored!
 		    'class': 'logging.FileHandler',
-		    'filename': '../log_file1.log',
+		    'filename': '../log_file1.log', # File location might turn out to be problematic.
             'formatter':'Simple_Format',
 		},
 
